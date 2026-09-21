@@ -64,9 +64,30 @@ const contactForm = document.querySelector('#contactForm');
 const formNotice = document.querySelector('#formNotice');
 contactForm?.addEventListener('submit', (event) => {
   event.preventDefault();
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.disabled = true;
   if (formNotice) {
-    formNotice.textContent = 'Thanks! Please contact us by phone or WhatsApp to complete your enquiry.';
+    formNotice.textContent = 'Sending your enquiry...';
     formNotice.classList.add('show');
   }
-  contactForm.reset();
+
+  fetch(contactForm.action, {
+    method: 'POST',
+    body: new FormData(contactForm),
+    headers: { Accept: 'application/json' }
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error('The enquiry could not be sent.');
+      return response.json();
+    })
+    .then(() => {
+      contactForm.reset();
+      if (formNotice) formNotice.textContent = 'Thanks! Your enquiry has been sent.';
+    })
+    .catch(() => {
+      if (formNotice) formNotice.textContent = 'We could not send your enquiry. Please contact us by phone or WhatsApp.';
+    })
+    .finally(() => {
+      if (submitButton) submitButton.disabled = false;
+    });
 });
