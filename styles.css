@@ -23,7 +23,7 @@ button{cursor:pointer}
 .nav-links a{color:#dce3ee;font-size:.92rem;transition:.25s}
 .nav-links a:hover,.nav-links a.active{color:#fff}
 .nav-links a.active{color:var(--blue2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:12px;padding:.85rem 1.2rem;font-weight:700;transition:.25s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:12px;padding:.85rem 1.2rem;font-weight:700;transition:.25s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 28px rgba(0,102,255,.25)}
 .btn-primary:hover{transform:translateY(-2px);background:#1672ff}
 .btn-outline{border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff}
@@ -33,6 +33,7 @@ main{padding-top:78px}
 .hero{min-height:calc(100vh - 78px);display:grid;place-items:center;position:relative;overflow:hidden}
 .hero:before{content:"";position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(0,102,255,.22),transparent 65%);right:-180px;top:-100px}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:4rem;align-items:center}
+.hero-copy{position:relative;z-index:1}
 .eyebrow{color:#6fa5ff;font-size:.78rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
 h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.065em}
 h2{font-size:clamp(2rem,4vw,3rem);line-height:1.05;letter-spacing:-.045em}
