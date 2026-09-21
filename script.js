@@ -14,11 +14,24 @@ menuToggle?.addEventListener('click', () => {
   menuToggle.setAttribute('aria-expanded', String(isOpen));
 });
 
+const closeMenu = () => {
+  navLinks?.classList.remove('open');
+  menuToggle?.setAttribute('aria-expanded', 'false');
+};
+
 navLinks?.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    menuToggle?.setAttribute('aria-expanded', 'false');
-  });
+  link.addEventListener('click', closeMenu);
+});
+
+document.addEventListener('click', (event) => {
+  if (!navLinks?.classList.contains('open')) return;
+  if (!navLinks.contains(event.target) && !menuToggle?.contains(event.target)) {
+    closeMenu();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeMenu();
 });
 
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -29,16 +42,31 @@ navLinks?.querySelectorAll('a[data-page]').forEach((link) => {
 });
 
 const revealElements = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver(
-  (entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.12 }
-);
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
 
-revealElements.forEach((element) => revealObserver.observe(element));
+  revealElements.forEach((element) => revealObserver.observe(element));
+} else {
+  revealElements.forEach((element) => element.classList.add('visible'));
+}
+
+const contactForm = document.querySelector('#contactForm');
+const formNotice = document.querySelector('#formNotice');
+contactForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (formNotice) {
+    formNotice.textContent = 'Thanks! Please contact us by phone or WhatsApp to complete your enquiry.';
+    formNotice.classList.add('show');
+  }
+  contactForm.reset();
+});
